@@ -6,9 +6,7 @@ Date: 2021-08-09
 Author: chang je Cho <qkdrk7777775@gmail.com>
 Maintainer: chang je Cho <qkdrk7777775@gmail.com>
 Depends: 
-    missForest,
-    imputeTS,
-    R (>= 2.10)
+    missForest, lubridate, imputeTS,dplyr,zoo, R (>= 2.10)
 Suggests: 
     testthat (>= 3.0.0),
     doParallel

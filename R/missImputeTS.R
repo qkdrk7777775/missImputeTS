@@ -7,17 +7,42 @@
 #'@description Uses Kalman Smoothing on structural time series models and missForest for imputation.missImputeTS' is used to impute missing values, especially for mixed type time series data. It can be used to impute continuous and/or categorical data, including complex interactions and non-linear relationships. This yields an out-of-bag (OOB) imputation error estimate. You can also save computation time by running them in parallel.
 #'
 #'@param xmis = data matrix with missing values
+#'@param time_var_name = time variable names. this column is equally spaced
 #'@param maxiter = stop after how many iterations (default = 10)
 #'@param ntree = how many trees are grown in the forest (default =100)
 #'@param mtry = number of variables randomly sampled at each split. This argument is directly supplied to the 'randomForest' function. default value is sqrt(p) where p is the number of variables in 'xmis'.
-#'@author Chang je Cho
-missImputeTS <- function(xmis, maxiter = 10, ntree = 100, variablewise = FALSE,
+#'@examples
+#'data("EuStockMarkets2")
+#'EuStockMarkets2$times=round_date(EuStockMarkets2$times,'1d')
+#'temp=full_join(EuStockMarkets2,
+#'data.frame(
+#'  times=seq(
+#'    min(EuStockMarkets2$times),
+#'    max(EuStockMarkets2$times),
+#'    3600*24)
+#'    )
+#'  )
+#'
+#'temp=temp[order(temp$times),]
+#'
+#'temp=data.frame(times=temp$times,
+#'                sapply(temp[,-grep(colnames(temp),'times')],
+#'                function(x){na.approx(x,rule=2)}))
+#'
+#'for(i in 2:5){
+#'  set.seed(i)
+#'  temp[sample(1:nrow(temp),nrow(temp)*.1),i]=NA
+#'}
+#'
+#'o=missImputeTS(xmis=temp,time_var_name='times')
+missImputeTS <- function(xmis,time_var_name, maxiter = 10, ntree = 100, variablewise = FALSE,
                        decreasing = FALSE, verbose = FALSE,
                        mtry = floor(sqrt(ncol(xmis))), replace = TRUE,
                        classwt = NULL, cutoff = NULL, strata = NULL,
                        sampsize = NULL, nodesize = NULL, maxnodes = NULL,
                        xtrue = NA, parallelize = c('no', 'variables', 'forests'),...){
-
+  times=xmis[,time_var_name]
+  columnIndex=colnames(xmis)
   n <- nrow(xmis)
   p <- ncol(xmis)-1
   if (!is.null(classwt)){
@@ -33,7 +58,7 @@ missImputeTS <- function(xmis, maxiter = 10, ntree = 100, variablewise = FALSE,
     stopifnot(length(nodesize) == 2)
   }
   if(length(unique(diff(xmis[,time_var_name])))!=1){
-    stopifnot(sum(sapply(xmis,is.POSIXct))!=1, length(unique(diff(xmis[,time_var_name])))==1)
+    stop('The time interval is different(time_var_name).')
   }
 
   ## remove completely missing variables
@@ -63,6 +88,8 @@ missImputeTS <- function(xmis, maxiter = 10, ntree = 100, variablewise = FALSE,
     }
   }
   ## perform initial S.W.A.G. on xmis (mean imputation)
+  xmis=xmis[,setdiff(colnames(xmis),time_var_name)]
+  ximp=ximp[,setdiff(colnames(ximp),time_var_name)]
   ximp <- xmis
   varType <- character(p)
   for (t.co in which(sapply(xmis,is.numeric))){
@@ -386,6 +413,8 @@ missImputeTS <- function(xmis, maxiter = 10, ntree = 100, variablewise = FALSE,
                   error = suppressWarnings(mixError(Ximp[[iter - 1]], xmis, xtrue)))
     }
   }
+  out$ximp[,time_var_name]=times
+  out$ximp=out$ximp[,columnIndex]
   class(out) <- 'missForest'
   return(out)
 }
