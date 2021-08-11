@@ -17,6 +17,7 @@ missImputeTS <- function(xmis, maxiter = 10, ntree = 100, variablewise = FALSE,
                        classwt = NULL, cutoff = NULL, strata = NULL,
                        sampsize = NULL, nodesize = NULL, maxnodes = NULL,
                        xtrue = NA, parallelize = c('no', 'variables', 'forests'),...){
+
   n <- nrow(xmis)
   p <- ncol(xmis)-1
   if (!is.null(classwt)){
