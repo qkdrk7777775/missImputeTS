@@ -1,4 +1,23 @@
 # missImputeTS
-Uses Kalman Smoothing on structural time series models and missForest for imputation.missImputeTS' is used to impute missing values, especially for mixed type time series data. It can be used to impute continuous and/or categorical data, including complex interactions and non-linear relationships. This yields an out-of-bag (OOB) imputation error estimate. You can also save computation time by running them in parallel.
 
-# This Packages yet build
+The missImputeTS package specializes on (multivariate) time series imputation. This algorithm is a combination of missForest and imputeTS algorithms. The missforest algorithm sometimes had a problem of presenting a bouncing value, and imputeTS had the disadvantage of being vulnerable to long-term missing and a univariate algorithm.
+
+### Installation
+The missImputeTS package For installation execute in R:
+```
+library(devtools)
+install_github('qkdrk7777775/missImputeTS')
+```
+
+The missImputeTS package For installation execute in python:
+```
+pip install missImputeTS
+```
+###
+
+
+### Version
+**3.3**
+
+### License
+GPL-3
