@@ -91,7 +91,6 @@ missImputeTS <- function(xmis,time_var_name, maxiter = 10, ntree = 100, variable
   }
   ## perform initial S.W.A.G. on xmis (mean imputation)
   xmis=xmis[,setdiff(colnames(xmis),time_var_name)]
-  ximp=ximp[,setdiff(colnames(ximp),time_var_name)]
   ximp <- xmis
   varType <- character(p)
   for (t.co in which(sapply(xmis,is.numeric))){
