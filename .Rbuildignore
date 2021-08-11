@@ -1,2 +1,9 @@
 ^missImputeTS\.Rproj$
 ^\.Rproj\.user$
+^MANIFEST.in
+^dist
+^missImputeTS
+^missImputeTS.egg-info
+^setup.*
+^source
+^data-raw

@@ -5,10 +5,11 @@ Version: 0.0.0.1
 Date: 2021-08-09
 Author: chang je Cho <qkdrk7777775@gmail.com>
 Maintainer: chang je Cho <qkdrk7777775@gmail.com>
-Depends: missForest,lubridate,imputeTS, dplyr,zoo, R (>= 2.10)
+Depends: missForest, imputeTS, R (>= 2.10)
+Imports: foreach, doMC, iterators, randomForest, stats, itertools
 Suggests: 
     testthat (>= 3.0.0),
-    doParallel,doMC
+    doParallel,lubridate,dplyr,zoo
 Description: The function 'missImputeTS' in this package is used to 
         impute timeseries missing values particularly in the case of mixed-type
         data.It uses a random forest trained on the observed values of 
