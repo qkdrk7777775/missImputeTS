@@ -35,6 +35,8 @@
 #'}
 #'
 #'o=missImputeTS(xmis=temp,time_var_name='times')
+#'@export
+
 missImputeTS <- function(xmis,time_var_name, maxiter = 10, ntree = 100, variablewise = FALSE,
                        decreasing = FALSE, verbose = FALSE,
                        mtry = floor(sqrt(ncol(xmis))), replace = TRUE,
