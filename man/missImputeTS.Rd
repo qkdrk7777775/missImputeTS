@@ -8,6 +8,7 @@ This R script contains the actual missImputeTS function.}
 \usage{
 missImputeTS(
   xmis,
+  time_var_name,
   maxiter = 10,
   ntree = 100,
   variablewise = FALSE,
@@ -29,6 +30,8 @@ missImputeTS(
 \arguments{
 \item{xmis}{= data matrix with missing values}
 
+\item{time_var_name}{= time variable names. this column is equally spaced}
+
 \item{maxiter}{= stop after how many iterations (default = 10)}
 
 \item{ntree}{= how many trees are grown in the forest (default =100)}
@@ -38,8 +41,31 @@ missImputeTS(
 \description{
 Uses Kalman Smoothing on structural time series models and missForest for imputation.missImputeTS' is used to impute missing values, especially for mixed type time series data. It can be used to impute continuous and/or categorical data, including complex interactions and non-linear relationships. This yields an out-of-bag (OOB) imputation error estimate. You can also save computation time by running them in parallel.
 }
+\examples{
+data("EuStockMarkets2")
+EuStockMarkets2$times=round_date(EuStockMarkets2$times,'1d')
+temp=full_join(EuStockMarkets2,
+data.frame(
+ times=seq(
+   min(EuStockMarkets2$times),
+   max(EuStockMarkets2$times),
+   3600*24)
+   )
+ )
+
+temp=temp[order(temp$times),]
+
+temp=data.frame(times=temp$times,
+               sapply(temp[,-grep(colnames(temp),'times')],
+               function(x){na.approx(x,rule=2)}))
+
+for(i in 2:5){
+ set.seed(i)
+ temp[sample(1:nrow(temp),nrow(temp)*.1),i]=NA
+}
+
+o=missImputeTS(xmis=temp,time_var_name='times')
+}
 \author{
 : changje Cho, qkdrk7777775@gmail.com
-
-Chang je Cho
 }
