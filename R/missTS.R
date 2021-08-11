@@ -11,18 +11,18 @@
 #'@param maxiter = stop after how many iterations (default = 10)
 #'@param ntree = how many trees are grown in the forest (default =100)
 #'@param mtry = number of variables randomly sampled at each split. This argument is directly supplied to the 'randomForest' function. default value is sqrt(p) where p is the number of variables in 'xmis'.
-#'@param variablewise = ddd
-#'@param decreasing = dd
-#'@param verbose = dd
-#'@param replace = dd
-#'@param classwt = dd
-#'@param cutoff = dd
-#'@param strata = dd
-#'@param sampsize = dd
-#'@param nodesize = dd
-#'@param maxnodes = dd
-#'@param xtrue = dd
-#'@param parallelize =dd
+#'@param variablewise = logical. If 'TRUE' the OOB error is returned for each variable separately. This can be useful as a reliability check for the imputed variables w.r.t. to a subsequent data analysis.
+#'@param decreasing = logical. If 'FALSE' then the variables are sorted w.r.t. increasing amount of missing entries during computation.
+#'@param verbose = 	logical. If 'TRUE' the user is supplied with additional output between iterations, i.e., estimated imputation error, runtime and if complete data matrix is supplied the true imputation error. See 'xtrue'.
+#'@param replace = logical. If 'TRUE' bootstrap sampling (with replacements) is performed else subsampling (without replacements).
+#'@param classwt = 	list of priors of the classes in the categorical variables. This is equivalent to the randomForest argument, however, the user has to set the priors for all categorical variables in the data set (for continuous variables set it 'NULL').
+#'@param cutoff = list of class cutoffs for each categorical variable. Same as with 'classwt' (for continuous variables set it '1').
+#'@param strata = list of (factor) variables used for stratified sampling. Same as with 'classwt' (for continuous variables set it 'NULL').
+#'@param sampsize = list of size(s) of sample to draw. This is equivalent to the randomForest argument, however, the user has to set the sizes for all variables.
+#'@param nodesize = minimum size of terminal nodes. Has to be a vector of length 2, with the first entry being the number for continuous variables and the second entry the number for categorical variables. Default is 1 for continuous and 5 for categorical variables.
+#'@param maxnodes = maximum number of terminal nodes for trees in the forest.
+#'@param xtrue = 	optional. Complete data matrix. This can be supplied to test the performance. Upon providing the complete data matrix 'verbose' will show the true imputation error after each iteration and the output will also contain the final true imputation error.
+#'@param parallelize = should 'missForest' be run parallel. Default is 'no'. If 'variables' the data is split into pieces of the size equal to the number of cores registered in the parallel backend. If 'forests' the total number of trees in each random forests is split in the same way. Whether 'variables' or 'forests' is more suitable, depends on the data. See Details.
 #'@param ... = dd
 #'@examples
 #'data("EuStockMarkets2")
