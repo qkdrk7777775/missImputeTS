@@ -10,6 +10,7 @@ setup(
    license='MIT',
    packages=['missImputeTS'],
    install_requires=['rPy2'],
+   include_package_data=True,
    keywords = ['imputation','interpolation','missforest','imputets','missImputeTS'],
    zip_safe=False)
 
