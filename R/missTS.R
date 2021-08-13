@@ -26,6 +26,7 @@
 #'@param ... = dd
 #'@examples
 #'data("EuStockMarkets2")
+#'# if discontinuous data
 #'EuStockMarkets2$times=lubridate::round_date(EuStockMarkets2$times,'1d')
 #'temp=dplyr::full_join(EuStockMarkets2,
 #'data.frame(
@@ -38,6 +39,7 @@
 #'
 #'temp=temp[order(temp$times),]
 #'
+#'# linear interpolation
 #'temp=data.frame(times=temp$times,
 #'                sapply(temp[,-grep('times',colnames(temp))],
 #'                function(x){zoo::na.approx(x,rule=2)}))
@@ -46,7 +48,7 @@
 #'  set.seed(i)
 #'  temp[sample(1:nrow(temp),nrow(temp)*.1),i]=NA
 #'}
-#'
+#'# if continuous missing data is my data
 #'o=missTS(xmis=temp,time_var_name='times')
 #'@importFrom  stats predict var
 #'@importFrom randomForest randomForest
