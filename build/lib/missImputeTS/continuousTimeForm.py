@@ -1,3 +1,5 @@
+import pandas as pd
+
 def continuousTimeForm(df, time_var_name,freq):
     df=df.set_index([time_var_name])
     dt_range=pd.date_range(min(df.index),max(df.index),freq=freq)
